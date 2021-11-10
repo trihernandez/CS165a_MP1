@@ -354,9 +354,9 @@ def main():
         SplitInput = SplitInput[0].split(", ")
         BayesPrediction = DataMap[ SplitInput[0] ].naive_bayes(TotalYes,TotalNo,SplitInput[1],SplitInput[2],SplitInput[3],SplitInput[4],SplitInput[5],SplitInput[6],SplitInput[7],SplitInput[8],SplitInput[9],SplitInput[10],SplitInput[11],SplitInput[12],SplitInput[13],SplitInput[14],SplitInput[15],SplitInput[16],SplitInput[17],SplitInput[18],SplitInput[19],SplitInput[20])
         print(BayesPrediction)
-        if(BayesPrediction == 1 and SplitInput[21] == "Yes")
+        if(BayesPrediction == 1 and SplitInput[21] == "Yes"):
             TotalRight = TotalRight + 1
-        if(BayesPrediction == 0 and SplitInput[21] == "No")
+        if(BayesPrediction == 0 and SplitInput[21] == "No"):
             TotalRight = TotalRight + 1
         TotalTests = TotalTests + 1
 
