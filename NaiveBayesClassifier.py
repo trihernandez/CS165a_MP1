@@ -78,17 +78,10 @@ def update_avg_and_var_vector(NumElements, OldAvg_x, OldAvg_y, OldVar_x, OldVar_
 #multiply by the st.dev to adjust the value on the curve so it's the same based on the number of st.dev from the mean
 #and the mean for this distribution returns 1
 def normalized_probability(avg, stdev, element):
-#    LeftPart = 1 / ( stdev * sqrt(2 * numpy.pi) )
-#    Exponent = -(element-avg)**2 / ( 2*stdev**2 )
-#    RightPart = math.e**Exponent
-#    return LeftPart*RightPart
-
-    #if unknown stdev, set it to 1 for functionality purposes
-    if(stdev == 0):
-        normal_pdf = scipy.stats.norm.pdf(element, loc=avg, scale=1)
-    else:
-        normal_pdf = scipy.stats.norm.pdf(element, loc=avg, scale=stdev)
-    return normal_pdf*stdev/(0.3989422804014327)
+    LeftPart = 1 / ( stdev * numpy.sqrt(2 * numpy.pi) )
+    Exponent = -(element-avg)**2 / ( 2*stdev**2 )
+    RightPart = 2.71828182845904523536**Exponent
+    return LeftPart * RightPart * stdev/(0.3989422804014327)
 
 
 
@@ -320,6 +313,8 @@ class LocationData:
 
 def main():
     #Start our Program
+    normal_debug()
+    
     start = timeit.default_timer()
 
     #input training data
