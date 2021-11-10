@@ -4,6 +4,7 @@ import scipy.stats
 import pandas
 import hashlib
 import fileinput
+import timeit #to calculate runtime
 
 import sys
 
@@ -88,7 +89,7 @@ def normalized_probability(avg, stdev, element):
     else:
         normal_pdf = scipy.stats.norm.pdf(element, loc=avg, scale=stdev)
     return normal_pdf*stdev/(0.3989422804014327)
-    
+
 
 
 
@@ -304,9 +305,9 @@ class LocationData:
             
         #return the larger probability
         if(Bayes_yes > Bayes_no ):
-            print(1)
+            return 1
         else:
-            print(0)
+            return 0
 
 
 
@@ -318,15 +319,17 @@ class LocationData:
 
 
 def main():
-    #debugging functions
-    #normal_debug()
-    
+    #Start our Program
+    start = timeit.default_timer()
+
     #input training data
     DataMap = {}
     TotalData = 0
     TotalYes = 0
     TotalNo = 0
-
+    
+    TotalTests = 0
+    TotalRight = 0
     
     for line in fileinput.input(files ='training.txt'):
 
@@ -349,7 +352,20 @@ def main():
     for line in fileinput.input(files ='testing.txt'):
         SplitInput = line.split("\n")
         SplitInput = SplitInput[0].split(", ")
-        DataMap[ SplitInput[0] ].naive_bayes(TotalYes,TotalNo,SplitInput[1],SplitInput[2],SplitInput[3],SplitInput[4],SplitInput[5],SplitInput[6],SplitInput[7],SplitInput[8],SplitInput[9],SplitInput[10],SplitInput[11],SplitInput[12],SplitInput[13],SplitInput[14],SplitInput[15],SplitInput[16],SplitInput[17],SplitInput[18],SplitInput[19],SplitInput[20])
-    
+        BayesPrediction = DataMap[ SplitInput[0] ].naive_bayes(TotalYes,TotalNo,SplitInput[1],SplitInput[2],SplitInput[3],SplitInput[4],SplitInput[5],SplitInput[6],SplitInput[7],SplitInput[8],SplitInput[9],SplitInput[10],SplitInput[11],SplitInput[12],SplitInput[13],SplitInput[14],SplitInput[15],SplitInput[16],SplitInput[17],SplitInput[18],SplitInput[19],SplitInput[20])
+        print(BayesPrediction)
+        if(BayesPrediction == 1 and SplitInput[21] == "Yes")
+            TotalRight = TotalRight + 1
+        if(BayesPrediction == 0 and SplitInput[21] == "No")
+            TotalRight = TotalRight + 1
+        TotalTests = TotalTests + 1
+
+    end = timeit.default_timer()
+    print("Total Runtime: ", end - start)
+    print()
+    print("Accuracy: ", TotalRight,"/",TotalTests)
+    print("          ", 100 * TotalRight/TotalTests, "%")
+
+
 if __name__=="__main__":
     main()
