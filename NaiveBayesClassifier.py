@@ -1,6 +1,6 @@
 import numpy
 import scipy
-import scipy.stats
+#import scipy.stats
 import pandas
 import hashlib
 import fileinput
