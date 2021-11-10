@@ -288,7 +288,7 @@ class LocationData:
         Bayes_yes = self.yDat.naive_bayes(MinTemp, MaxTemp, Rainfall, Evaporation, Sunshine, WindGustDir, WindGustSpeed, WindDir9am, WindDir3pm, WindSpeed9am, WindSpeed3pm, Humidity9am, Humidity3pm, Pressure9am, Pressure3pm, Cloud9am, Cloud3pm, Temp9am, Temp3pm, RainToday)
         Bayes_no = self.nDat.naive_bayes(MinTemp, MaxTemp, Rainfall, Evaporation, Sunshine, WindGustDir, WindGustSpeed, WindDir9am, WindDir3pm, WindSpeed9am, WindSpeed3pm, Humidity9am, Humidity3pm, Pressure9am, Pressure3pm, Cloud9am, Cloud3pm, Temp9am, Temp3pm, RainToday)
         #prevents the learner from being indecisive if the two binary predictors are too low.
-        if(RainToday == yes):
+        if(RainToday == "Yes"):
             if (self.nDat.RainToday_percentage < 10**-10 and self.yDat.RainToday_percentage < 10**-10):
                 Bayes_yes = Bayes_yes
                 Bayes_no = Bayes_no
