@@ -16,7 +16,7 @@ def update_avg(NumElements, OldAvg, NewElement):
     Denominator = NumElements + 1
     return Numerator / Denominator
 
-#Code for else case taken from:
+#Algorithm for else case taken from:
 #https://math.stackexchange.com/questions/775391/can-i-calculate-the-new-standard-deviation-when-adding-a-value-without-knowing-t
 #Updates the variance by adding a new element to a set given the number of elements, average, and variance
 #Also updates the average and returns both the updated variance and average
@@ -288,12 +288,22 @@ class LocationData:
         Bayes_yes = self.yDat.naive_bayes(MinTemp, MaxTemp, Rainfall, Evaporation, Sunshine, WindGustDir, WindGustSpeed, WindDir9am, WindDir3pm, WindSpeed9am, WindSpeed3pm, Humidity9am, Humidity3pm, Pressure9am, Pressure3pm, Cloud9am, Cloud3pm, Temp9am, Temp3pm, RainToday)
         Bayes_no = self.nDat.naive_bayes(MinTemp, MaxTemp, Rainfall, Evaporation, Sunshine, WindGustDir, WindGustSpeed, WindDir9am, WindDir3pm, WindSpeed9am, WindSpeed3pm, Humidity9am, Humidity3pm, Pressure9am, Pressure3pm, Cloud9am, Cloud3pm, Temp9am, Temp3pm, RainToday)
         #prevents the learner from being indecisive if the two binary predictors are too low.
-        if (self.nDat.RainToday_percentage < 10**-10 and self.yDat.RainToday_percentage < 10**-10):
-            Bayes_yes = Bayes_yes
-            Bayes_no = Bayes_no
+        if(RainToday == yes):
+            if (self.nDat.RainToday_percentage < 10**-10 and self.yDat.RainToday_percentage < 10**-10):
+                Bayes_yes = Bayes_yes
+                Bayes_no = Bayes_no
+            else:
+                Bayes_yes = Bayes_yes * self.yDat.RainToday_percentage
+                Bayes_no = Bayes_no * self.nDat.RainToday_percentage
         else:
-            Bayes_yes = Bayes_yes * self.yDat.RainToday_percentage
-            Bayes_no = Bayes_no * self.yDat.RainToday_percentage
+            NoRainToday_yDat = 1 - self.yDat.RainToday_percentage
+            NoRainToday_nDat = 1 - self.nDat.RainToday_percentage
+            if (NoRainToday_yDat < 10**-10 and NoRainToday_nDat < 10**-10):
+                Bayes_yes = Bayes_yes
+                Bayes_no = Bayes_no
+            else:
+                Bayes_yes = Bayes_yes * NoRainToday_yDat
+                Bayes_no = Bayes_no * NoRainToday_nDat
             
         #return the larger probability
         if(Bayes_yes > Bayes_no ):
@@ -342,7 +352,7 @@ def main():
             TotalNo = TotalNo + 1
     
     #Start reading our test data
-    for line in fileinput.input(files ='testing.txt'):
+    for line in fileinput.input(files ='private_testing_input.txt'):
         SplitInput = line.split("\n")
         SplitInput = SplitInput[0].split(", ")
         BayesPrediction = DataMap[ SplitInput[0] ].naive_bayes(TotalYes,TotalNo,SplitInput[1],SplitInput[2],SplitInput[3],SplitInput[4],SplitInput[5],SplitInput[6],SplitInput[7],SplitInput[8],SplitInput[9],SplitInput[10],SplitInput[11],SplitInput[12],SplitInput[13],SplitInput[14],SplitInput[15],SplitInput[16],SplitInput[17],SplitInput[18],SplitInput[19],SplitInput[20])
@@ -354,10 +364,10 @@ def main():
         TotalTests = TotalTests + 1
 
     end = timeit.default_timer()
-    print("Total Runtime: ", end - start)
-    print()
-    print("Accuracy: ", TotalRight,"/",TotalTests)
-    print("          ", 100 * TotalRight/TotalTests, "%")
+    #print("Total Runtime: ", end - start)
+    #print()
+    #print("Accuracy: ", TotalRight,"/",TotalTests)
+    #print("          ", 100 * TotalRight/TotalTests, "%")
 
 
 if __name__=="__main__":
