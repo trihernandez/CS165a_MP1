@@ -352,7 +352,7 @@ def main():
             TotalNo = TotalNo + 1
     
     #Start reading our test data
-    for line in fileinput.input(files ='private_testing_input.txt'):
+    for line in fileinput.input(files ='testing.txt'):
         SplitInput = line.split("\n")
         SplitInput = SplitInput[0].split(", ")
         BayesPrediction = DataMap[ SplitInput[0] ].naive_bayes(TotalYes,TotalNo,SplitInput[1],SplitInput[2],SplitInput[3],SplitInput[4],SplitInput[5],SplitInput[6],SplitInput[7],SplitInput[8],SplitInput[9],SplitInput[10],SplitInput[11],SplitInput[12],SplitInput[13],SplitInput[14],SplitInput[15],SplitInput[16],SplitInput[17],SplitInput[18],SplitInput[19],SplitInput[20])
