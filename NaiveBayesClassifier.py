@@ -1,6 +1,5 @@
 import numpy
 import scipy
-#import scipy.stats
 import pandas
 import hashlib
 import fileinput
@@ -313,7 +312,6 @@ class LocationData:
 
 def main():
     #Start our Program
-    normal_debug()
     
     start = timeit.default_timer()
 
